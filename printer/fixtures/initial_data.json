@@ -1,0 +1,42 @@
+[
+    {
+        "model": "printer.printer",
+        "pk": 1,
+        "fields": {
+            "name": "printer1",
+            "api_key": "003c656b-6a24-419e-912e-45b2fcf7a8b4",
+            "check_type": "client",
+            "point_id": 1
+        }
+    },
+    {
+        "model": "printer.printer",
+        "pk": 2,
+        "fields": {
+            "name": "printer2",
+            "api_key": "75ff91f2-8454-4cee-abd5-bfdd6ce6ff40",
+            "check_type": "kitchen",
+            "point_id": 1
+        }
+    },
+    {
+        "model": "printer.printer",
+        "pk": 3,
+        "fields": {
+            "name": "printer3",
+            "api_key": "351f848c-f2a3-4b51-9f18-5083dd309f63",
+            "check_type": "client",
+            "point_id": 2
+        }
+    },
+    {
+        "model": "printer.printer",
+        "pk": 4,
+        "fields": {
+            "name": "printer4",
+            "api_key": "4f579974-f769-4239-9884-89ee8a812d35",
+            "check_type": "kitchen",
+            "point_id": 2
+        }
+    }
+]

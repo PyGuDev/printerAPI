@@ -9,11 +9,15 @@ CHECK_TYPE  = [
 
 
 class Printer(models.Model):
+    """ Модель принтеров для печати чека"""
     name = models.CharField('Название принтера', max_length=30)
     api_key = models.CharField(max_length=255)
     check_type = models.CharField('Тип чека', max_length=8, choices=CHECK_TYPE)
     point_id = models.IntegerField('Точка')
 
+    def __str__(self):
+        return self.name
+    
     
     class Meta:
         verbose_name = 'Принтер'
@@ -21,8 +25,9 @@ class Printer(models.Model):
     
 
 class Check(models.Model):
+    """Модель чека"""
     STATUS = [
-        ('news', 'news'),
+        ('new', 'new'),
         ('rendered', 'rendered'),
         ('printed', 'printed'),
     ]
@@ -31,7 +36,7 @@ class Check(models.Model):
     type = models.CharField('Тип чека', max_length=8, choices=CHECK_TYPE)
     order = JSONField('Информация заказа')
     status = models.CharField('Статус', max_length=10, choices=STATUS)
-    pdf_file = models.FileField('PDF', upload_to='pdf/')
+    pdf_file = models.FileField('PDF', upload_to='pdf/', blank=True)
 
 
     class Meta:
