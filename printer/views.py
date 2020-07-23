@@ -19,6 +19,8 @@ class CheckCreateView(APIView):
         #Проверка наличия принтера в данной точке
         try:
             Printer.objects.get(point_id=request.data.get('point_id'))
+        except Printer.MultipleObjectsReturned:
+            pass
         except Printer.DoesNotExist:
             return Response(status=400, data=data_error2) 
         
@@ -27,6 +29,6 @@ class CheckCreateView(APIView):
             if obj.order['id'] == request.data.get('id'):
                 return Response(status=400, data=data_error)
         check.create(request.data, 'client')
-        check.create(request.datat, 'kitchen')
+        check.create(request.data, 'kitchen')
             
         return Response(status=200)
