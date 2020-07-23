@@ -9,6 +9,9 @@ class CheckCreateView(APIView):
 
     def post(self, request):
         check = CheckCreateSerializer()
+        data_ok = {
+            "ok" : "Чеки успешно созданы"
+        }
         data_error = {
             "error" : "Для данного заказа уже созданы чеки"
         }
@@ -31,4 +34,4 @@ class CheckCreateView(APIView):
         check.create(request.data, 'client')
         check.create(request.data, 'kitchen')
             
-        return Response(status=200)
+        return Response(status=200, data=data_ok)
