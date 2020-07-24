@@ -1,15 +1,18 @@
 import json
 import requests
 import base64
+import os
 from django.core.files.base import ContentFile
+from django.conf import settings
 
 URL = 'http://localhost:32770'
 
 
 def create_path(id, type_check):
     """Создаем имя для pdf"""
+    folder = os.path.join(settings.MEDIA_ROOT, 'pdf')
     file = str(id) + '_' + type_check + '.pdf'
-    return file
+    return os.path.join(folder, file)
 
 
 def convertHtmltoPDF(html, to_pdf, obj):

@@ -40,9 +40,14 @@ class CheckCreateView(APIView):
                 return Response(status=400, data=data_error)
 
         # Создание чеков для клиента и кухни
-        client_check = check_serilizer.create(request.data, client)
-        kitchen_check = check_serilizer.create(request.data, kitchen)
-        # Создается задание для воркера 
-        django_rq.enqueue(task.convertHtmltoPDF, render(request, 'client_check.html').content, task.create_path(id_order, client), client_check)
-        django_rq.enqueue(task.convertHtmltoPDF, render(request, 'kitchen_check.html').content, task.create_path(id_order, kitchen), kitchen_check)
+        client_check_obj = check_serilizer.create(request.data, client)
+        kitchen_check_obj = check_serilizer.create(request.data, kitchen)
+
+        # Создается задание для воркера
+        # Создаю html шаблон
+        html_temp = render(request, 'client_check.html', context={'order': client_check_obj.order}).content
+        django_rq.enqueue(task.convertHtmltoPDF, html_temp, task.create_path(id_order, client), client_check_obj)
+
+        html_temp = render(request, 'kitchen_check.html', context={'order': kitchen_check_obj.order}).content
+        django_rq.enqueue(task.convertHtmltoPDF, html_temp, task.create_path(id_order, kitchen), kitchen_check_obj)
         return Response(status=200, data=data_ok)
