@@ -11,7 +11,9 @@ class CheckCreateView(APIView):
     """ Создание чека """
 
     def post(self, request):
-        check = CheckCreateSerializer()
+        check_serilizer = CheckCreateSerializer()
+        client = 'client'
+        kitchen = 'kitchen'
         data_ok = {
             "ok": "Чеки успешно созданы"
         }
@@ -38,8 +40,9 @@ class CheckCreateView(APIView):
                 return Response(status=400, data=data_error)
 
         # Создание чеков для клиента и кухни
-        client_check = check.create(request.data, 'client')
-        kitchen_check = check.create(request.data, 'kitchen')
-        django_rq.enqueue(task.convertHtmltoPDF, render(request, 'client_check.html').content, task.create_path(id_order, 'client'), client_check)
-        django_rq.enqueue(task.convertHtmltoPDF, render(request, 'kitchen_check.html').content, task.create_path(id_order, 'kitchen'), kitchen_check)
+        client_check = check_serilizer.create(request.data, client)
+        kitchen_check = check_serilizer.create(request.data, kitchen)
+        # Создается задание для воркера 
+        django_rq.enqueue(task.convertHtmltoPDF, render(request, 'client_check.html').content, task.create_path(id_order, client), client_check)
+        django_rq.enqueue(task.convertHtmltoPDF, render(request, 'kitchen_check.html').content, task.create_path(id_order, kitchen), kitchen_check)
         return Response(status=200, data=data_ok)
