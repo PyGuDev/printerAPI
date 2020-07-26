@@ -71,8 +71,10 @@ class AvailableCheckView(APIView):
             return Response(status=401, data={"error": "Ошибка авторизации"})
 
         # Получение cписка чеков у принтера
-        cheks = Check.objects.filter(printer_id=printer)
+        cheks = Check.objects.filter(printer_id=printer, status='new')
         check_serializer = CheckListSerializer(cheks, many=True)
+        # Ставлю задачу на смену статуса чеков
+        django_rq.enqueue(task.change_of_status, cheks, 'rendered')
         return Response(status=200, data=check_serializer.data)
 
 
@@ -104,7 +106,8 @@ class CheckView(APIView):
         file_name = check.pdf_file.path.rsplit('/')[len(check.pdf_file.path.rsplit('/'))-1]
         response = HttpResponse(pdf_file, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="{}"'.format(file_name)
-
+        check.status = 'printed'
+        check.save()
         return response
 
 
