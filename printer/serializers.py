@@ -29,7 +29,7 @@ class CheckListSerializer(serializers.ModelSerializer):
     """Сериалайзер списка чеков"""
     class Meta:
         model = Check
-        fields = ['pk']
+        fields = ['id']
 
 
 

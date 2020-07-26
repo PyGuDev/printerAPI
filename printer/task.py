@@ -24,3 +24,11 @@ def convertHtmltoPDF(html, to_pdf, obj):
     response = requests.post(URL, data=json.dumps(data), headers=headers)
     file = ContentFile(response.content)
     obj.pdf_file.save(to_pdf, file, save=True)
+
+
+def change_of_status(objects, status):
+    """Функция смены статуса объектов"""
+
+    for obj in objects:
+        obj.status = status
+        obj.save()
