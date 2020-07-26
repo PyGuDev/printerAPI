@@ -1,0 +1,31 @@
+# Use postgres/example user/password credentials
+version: '3'
+
+services:
+
+    db:
+        image: postgres:9.6
+        container_name: postgres
+        restart: always
+        ports: 
+            - 5432:5432
+        volumes: 
+            - ./pg_data
+        environment: 
+            POSTGRES_PASSWORD: toysulo12
+            POSTGRES_DB: apidb
+            PGDATA: /var/lib/postgresql/data/pgdata
+    
+    redis:
+        image: redis
+        container_name: redis
+        restart: always
+        ports: 
+            - 6379:6379
+    
+    wkhtmltopdf:
+        image: openlabs/docker-wkhtmltopdf-aas
+        container_name: wkhtmltopdf
+        restart: always
+        ports: 
+            - 32770:80
