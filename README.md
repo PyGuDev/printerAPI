@@ -8,6 +8,10 @@
 * Django Rest Framework 3.11
 * Python 3.6
 * django-rq 2.1
+#### После миграции базы данных можно запустить заранее подготовленые принтеры [fixtures]
+```
+python manage.py loaddata initial_data
+```
 #### Воркер запускается командой
 ```
 python manage.py rqworker
