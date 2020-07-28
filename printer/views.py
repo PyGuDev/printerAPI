@@ -1,3 +1,4 @@
+import django_rq
 from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -7,11 +8,11 @@ from .serializers import CheckCreateSerializer, CheckListSerializer
 from django.shortcuts import render
 from django.http import HttpResponse
 from . import task
-import django_rq
 
 
 class CheckCreateView(APIView):
     """ Создание чека """
+    http_method_names = ['post']
 
     def post(self, request):
         check_serilizer = CheckCreateSerializer()
@@ -58,7 +59,7 @@ class CheckCreateView(APIView):
 
 
 class AvailableCheckView(APIView):
-    """Вывод списка id чеков по принтеру"""
+    """Вывод списка доступных чеков для печати"""
 
     def get(self, request):
         # Получаю api_key из request
@@ -75,11 +76,11 @@ class AvailableCheckView(APIView):
         check_serializer = CheckListSerializer(cheks, many=True)
         # Ставлю задачу на смену статуса чеков
         django_rq.enqueue(task.change_of_status, cheks, 'rendered')
-        return Response(status=200, data=check_serializer.data)
+        return Response(status=200, data={"checks": check_serializer.data})
 
 
 class CheckView(APIView):
-    """Вывод pdf чеков"""
+    """Вывод pdf файла чека"""
     def get(self, request):
         # Получаю api_key и check_id из request
         try:
