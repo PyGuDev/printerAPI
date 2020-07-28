@@ -7,6 +7,11 @@
 * Django 1.11
 * Django Rest Framework 3.11
 * Python 3.6
+* django-rq 2.1
+#### Воркер запускается командой
+```
+python manage.py rqworker
+```
 ### Инфроструктурные вещи запускаются через docker-compose
 * Redis
 * Postgresql 9.6
