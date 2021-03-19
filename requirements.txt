@@ -1,6 +1,6 @@
 Django==1.11
 django-rq==2.1.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 psycopg2-binary==2.8.5
 redis==3.5.3
 requests==2.24.0
